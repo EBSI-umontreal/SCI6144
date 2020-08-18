@@ -1,0 +1,166 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile for Alfresco CE (without RM)
+# URL : 127.0.0.1:8080
+# Admin username : admin
+# Admin password : admin
+
+# Documentation for dependencies : https://www.alfresco.com/fr/thank-you/thank-you-downloading-alfresco-community-edition-old-6.1
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://vagrantcloud.com/search.
+  config.vm.box = "generic/ubuntu2004"
+
+  # Disable automatic box update checking. If you disable this, then
+  # boxes will only be checked for updates when the user runs
+  # `vagrant box outdated`. This is not recommended.
+  # config.vm.box_check_update = false
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
+  # NOTE: This will enable public access to the opened port
+  # config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine and only allow access
+  # via 127.0.0.1 to disable public access
+  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1", id: "tomcat"
+  config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1", id: "http"
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+  # config.vm.network "private_network", ip: "192.168.33.10"
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  # config.vm.network "public_network"
+
+  # Share an additional folder to the guest VM. The first argument is
+  # the path on the host to the actual folder. The second argument is
+  # the path on the guest to mount the folder. And the optional third
+  # argument is a set of non-required options.
+  # config.vm.synced_folder "../data", "/vagrant_data"
+
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  # Example for VirtualBox:
+  #
+  config.vm.provider "virtualbox" do |vb|
+  #   # Display the VirtualBox GUI when booting the machine
+  #   vb.gui = true
+  #
+  #   # Customize the amount of memory on the VM:
+    vb.memory = "4096"
+  end
+  #
+  # View the documentation for the provider you are using for more
+  # information on available options.
+
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
+  # documentation for more information about their specific syntax and use.
+  config.vm.provision "shell", inline: <<-SHELL
+
+    # Update and install dependencies
+    apt-get update
+    apt-get install git tomcat9 openjdk-11-jdk postgresql postgresql-client-common software-properties-common unzip -y
+
+    # Create PostgreSQL database, see : https://docs.alfresco.com/community/tasks/prep-filesys-db.html
+    postgres psql -c "create database alfresco encoding 'utf8';"
+    postgres psql -c "create role alfresco LOGIN password 'alfresco';"
+    postgres psql -c "grant all on database alfresco to alfresco;"
+
+    # Download the JDBC driver and copy to Tomcat lib, see : https://docs.alfresco.com/community/tasks/configfiles-change-path.html
+    wget https://jdbc.postgresql.org/download/postgresql-42.2.14.jar
+    cp postgresql-42.2.14.jar /var/lib/tomcat9/lib/
+
+    # Create directories for Alfresco, see : https://docs.alfresco.com/community/tasks/configfiles-change-path.html
+    mkdir /var/lib/tomcat9/shared/
+    mkdir /var/lib/tomcat9/shared/classes
+    mkdir /var/lib/tomcat9/shared/lib
+
+    # Changes to Tomcat conf, see : https://docs.alfresco.com/community/tasks/configfiles-change-path.html
+    sed -i 's+shared.loader=+shared.loader=${catalina.base}/shared/classes+g' /var/lib/tomcat9/conf/catalina.properties
+    sed -i '69 a \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ URIEncoding="UTF-8"' /var/lib/tomcat9/conf/server.xml
+    sed -i '71 a \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ maxHttpHeaderSize="32768"' /var/lib/tomcat9/conf/server.xml
+    
+    # Changes to Tomcat conf for Solr
+    sed -i '73 a <Connector port="8443" protocol="org.apache.coyote.http11.Http11Protocol"' /var/lib/tomcat9/conf/server.xml
+    sed -i '74 a \ \ \ \ \ \ SSLEnabled="true" maxThreads="150" scheme="https"' /var/lib/tomcat9/conf/server.xml
+    sed -i '75 a \ \ \ \ \ \ keystoreFile="xxxxx"' /var/lib/tomcat9/conf/server.xml
+    sed -i '76 a \ \ \ \ \ \ keystorePass="password" keystoreType="JCEKS"' /var/lib/tomcat9/conf/server.xml
+    sed -i '77 a \ \ \ \ \ \ secure="true" connectionTimeout="240000"' /var/lib/tomcat9/conf/server.xml
+    sed -i '78 a \ \ \ \ \ \ truststoreFile="xxxxx"' /var/lib/tomcat9/conf/server.xml
+    sed -i '79 a \ \ \ \ \ \ truststorePass="password" truststoreType="JCEKS"' /var/lib/tomcat9/conf/server.xml 
+    sed -i '80 a \ \ \ \ \ \ clientAuth="want" sslProtocol="TLS" />' /var/lib/tomcat9/conf/server.xml
+
+    # Cleaning webapps before installing Alfresco WAR, see : https://docs.alfresco.com/community/tasks/alf-war-install.html
+    rm -rf /var/lib/tomcat9/webapps/*/
+    
+    
+    # Download, unzip and move Alfresco Distribution
+    wget https://download.alfresco.com/cloudfront/release/community/201901-GA-build-205/alfresco-content-services-community-distribution-6.1.2-ga.zip
+    unzip alfresco-content-services-community-distribution-6.1.2-ga.zip
+
+    #move Alfresco Distribution, see : https://docs.alfresco.com/community/tasks/alf-war-install.html
+    cp alfresco-content-services-community-distribution-6.1.2-ga/web-server/webapps/*.war /var/lib/tomcat9/webapps/
+    cp -r alfresco-content-services-community-distribution-6.1.2-ga/web-server/conf/ /etc/tomcat9/
+    cp -r alfresco-content-services-community-distribution-6.1.2-ga/web-server/lib/ /var/lib/tomcat9/
+
+    # Adapting /web-server/shared/classes/alfresco-global.properties.sample to our needs.
+    sudo cp alfresco-content-services-community-distribution-6.1.2-ga/web-server/shared/classes/alfresco-global.properties.sample /var/lib/tomcat9/shared/classes/alfresco-global.properties
+
+    sed -i '8s/^.//' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+    sed -i '9s/^.//' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+    sed -i '14s/^.//' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+    sed -i '15s/^.//' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+    sed -i '65s/^.//' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+    sed -i '66s/^.//' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+    sed -i '128s/^.//' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+    sed -i '129s/^.//' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+    sed -i '130s/^.//' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+    sed -i '131s/^.//' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+    sed -i '133s/^.//' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+    sed -i '134s/^.//' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+    sed -i '135s/^.//' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+    sed -i '136s/^.//' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+
+    sed -i '3 a # Set this property unless you have explicitly chosen to expose some repository APIs without authentication' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+    sed -i '4 a solr.secureComms=https' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+
+    # Download, unzip and move alfresco-search-services
+    wget https://download.alfresco.com/cloudfront/release/community/SearchServices/1.3.0.1/alfresco-search-services-1.3.0.1.zip
+    unzip alfresco-search-services-1.3.0.1.zip
+    
+    # Installing and configuring Alfresco Search Services, see : https://docs.alfresco.com/search-community/tasks/solr-install-withoutSSL.html
+    sed -i '206 a index.subsystem.name=solr6' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+    sed -i '207 a solr.secureComms=none' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+    sed -i '208 a solr.port=8983' /var/lib/tomcat9/shared/classes/alfresco-global.properties
+    sed -i '19s/^.//' alfresco-search-services/solrhome/conf/shared.properties
+    sed -i '20s/^.//' alfresco-search-services/solrhome/conf/shared.properties
+    sed -i '21s/^.//' alfresco-search-services/solrhome/conf/shared.properties
+    sed -i '22s/^.//' alfresco-search-services/solrhome/conf/shared.properties
+
+    ./solr/bin/solr start -a "-Dcreate.alfresco.defaults=alfresco,archive"
+
+    # Download, unzip and move alfresco-file-transfer-receiver
+    wget https://download.alfresco.com/cloudfront/release/community/201808-EA-build-00140/alfresco-file-transfer-receiver-6.2.1.zip
+    unzip alfresco-file-transfer-receiver-6.2.1.zip
+
+    SHELL
+
+  # Peut-être ...
+  # config.vm.provision :shell, inline: "../solr/bin/solr start -a "-Dcreate.alfresco.defaults=alfresco,archive"", run: 'always'
+end
