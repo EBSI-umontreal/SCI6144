@@ -27,13 +27,13 @@ Pour partager toujours le même dossier de travail.
 ## Sources des VM
 
 * Accesstomemory
-  * Documentation pour l'installation avec Vagrant : [https://www.accesstomemory.org/fr/docs/2.6/dev-manual/env/vagrant/#dev-env-vagrant](https://www.accesstomemory.org/fr/docs/2.6/dev-manual/env/vagrant/#dev-env-vagrant)
+  * Documentation pour une installation avec Vagrant : [https://www.accesstomemory.org/fr/docs/2.6/dev-manual/env/vagrant/#dev-env-vagrant](https://www.accesstomemory.org/fr/docs/2.6/dev-manual/env/vagrant/#dev-env-vagrant)
 * Alfresco
 * Alfresco-RM
 * Archivematica
-  * Documentation pour installation avec Vagrant : [https://www.archivematica.org/fr/docs/archivematica-1.11/getting-started/quick-start/quick-start/#installing-on-vm](https://www.archivematica.org/fr/docs/archivematica-1.11/getting-started/quick-start/quick-start/#installing-on-vm)
+  * Documentation pour une installation avec Vagrant : [https://www.archivematica.org/fr/docs/archivematica-1.11/getting-started/quick-start/quick-start/#installing-on-vm](https://www.archivematica.org/fr/docs/archivematica-1.11/getting-started/quick-start/quick-start/#installing-on-vm)
 * ArchiveSpace
-  * Documentation pour installation avec Vagrant : [https://github.com/seanlw/archivesspace-vagrant](https://github.com/seanlw/archivesspace-vagrant)
+  * Documentation pour une installation avec Vagrant : [https://github.com/seanlw/archivesspace-vagrant](https://github.com/seanlw/archivesspace-vagrant)
   * Démo officielle : [https://archivesspace.org/application/demo](https://archivesspace.org/application/demo)
 * CollectiveAccess
   * Documentation pour installation : [https://collectiveaccess.org/getting-started](https://collectiveaccess.org/getting-started)
@@ -47,7 +47,7 @@ Pour partager toujours le même dossier de travail.
   * Documentation d'intallation [https://doc.nuxeo.com/nxdoc/installing-the-nuxeo-platform-on-linux/](https://doc.nuxeo.com/nxdoc/installing-the-nuxeo-platform-on-linux/)
 * OpenKM
 * Rocket.chat
-  * Documentation pour installation avec Vagrant : [https://docs.rocket.chat/installation/automation-tools/vagrant](https://docs.rocket.chat/installation/automation-tools/vagrant)
-* Solr
+  * Documentation pour une installation avec Vagrant : [https://docs.rocket.chat/installation/automation-tools/vagrant](https://docs.rocket.chat/installation/automation-tools/vagrant)
 * [SubjectPlus](http://www.subjectsplus.com/)
 * Wikipedia
+  * Documentation pour une installation avec Vagrant : [https://www.mediawiki.org/wiki/MediaWiki-Vagrant](https://www.mediawiki.org/wiki/MediaWiki-Vagrant)

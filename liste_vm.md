@@ -22,8 +22,8 @@ La liste des machines virtuelles par catégories pertinentes pour le cours SCI61
 
 ## Recherche en entreprise
 
+* Constellio
 * Elasticsearch
-* Solr
 
 ## Systèmes de collaboration
 
