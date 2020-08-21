@@ -45,7 +45,8 @@ Pour partager toujours le même dossier de travail.
 * Nuxeo
   * Fichiers à télécharger [https://nuxeo.github.io/downloads.html](https://nuxeo.github.io/downloads.html)
   * Documentation d'intallation [https://doc.nuxeo.com/nxdoc/installing-the-nuxeo-platform-on-linux/](https://doc.nuxeo.com/nxdoc/installing-the-nuxeo-platform-on-linux/)
-* OpenKM
+* [OpenKM](https://www.openkm.com/)
+  * Documentation : [https://docs.openkm.com/kcenter/view/okm-6.3-com/installation.html](https://docs.openkm.com/kcenter/view/okm-6.3-com/installation.html)
 * Rocket.chat
   * Documentation pour une installation avec Vagrant : [https://docs.rocket.chat/installation/automation-tools/vagrant](https://docs.rocket.chat/installation/automation-tools/vagrant)
 * [SubjectPlus](http://www.subjectsplus.com/)
