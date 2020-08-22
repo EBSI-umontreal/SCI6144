@@ -106,6 +106,7 @@ Vagrant.configure("2") do |config|
     cp /vagrant/sources/tomcat /etc/init.d/
 
     chmod 755 /etc/init.d/tomcat
+    
     cd /home/openkm
     # Download the file. This may take to much time. We should have it locally
     wget https://cfhcable.dl.sourceforge.net/project/openkm/6.3.2/openkm-6.3.2-community-tomcat-bundle.zip
