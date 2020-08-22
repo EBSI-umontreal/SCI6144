@@ -90,18 +90,19 @@ Vagrant.configure("2") do |config|
     apt-get install -y openjdk-8-jdk mysql-server clamav imagemagick ghostscript tesseract-ocr tesseract-ocr-fra
     apt-get install -y libreoffice --no-install-recommends  --no-install-suggests
 
-    # Change MySQL root password.
-    # This is not secure.
+    # Change MySQL root password
+    # This is not secure
     /usr/bin/mysqladmin -u root -h localhost password 'password'
 
     # Create database
+    # This is not secure
     CREATE DATABASE okmdb DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_bin;
     CREATE USER openkm@localhost IDENTIFIED BY 'password';
     GRANT ALL ON okmdb.* TO openkm@localhost WITH GRANT OPTION;
 
     # Installing OpenKM and Tomcat bundle
     cd /home/openkm
-    # Download the file. This may take to much time. We should have it locally.
+    # Download the file. This may take to much time. We should have it locally
     wget https://cfhcable.dl.sourceforge.net/project/openkm/6.3.2/openkm-6.3.2-community-tomcat-bundle.zip
     unzip openkm-6.3.2-community-tomcat-bundle.zip
 
