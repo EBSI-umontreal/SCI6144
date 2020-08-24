@@ -74,7 +74,7 @@ config.vm.provision "shell", inline: <<-SHELL
 
   # Update and installe dependencies
   apt-get update
-  apt-get install apache2 libapache2-mod-php mysql-server mysql-client php7.4-curl php7.4-gettext php7.4-json php7.4-mbstring php7.4-gd php7.4-mysql php7.4-simplexml -y
+  apt-get install -y apache2 libapache2-mod-php mysql-server mysql-client php7.4-curl php7.4-gettext php7.4-json php7.4-mbstring php7.4-gd php7.4-mysql php7.4-simplexml
 
   # Download latest version and unzip
   wget https://github.com/tematres/TemaTres-Vocabulary-Server/archive/master.zip
