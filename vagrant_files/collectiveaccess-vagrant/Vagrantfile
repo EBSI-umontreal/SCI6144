@@ -2,8 +2,8 @@
 # vi: set ft=ruby :
 
 # Vagrantfile for CollectiveAcess
-# URL : 127.0.0.1/
-# URL for initial setup : 127.0.0.1/
+# URL : 127.0.0.1/sp
+# URL for initial setup : 127.0.0.1/sp
 # Info for setup
 # Database URL or IP : localhost
 # Database name : 
@@ -78,7 +78,7 @@ config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1", i
     apt-get update
     apt-get install apache2 libapache2-mod-php mysql-server mysql-client php7.4-curl php7.4-gettext php7.4-json php7.4-mbstring php7.4-gd php7.4-mysql php7.4-simplexml -y
 
-    # Télécharger et extraire SubjectsPlus
+    # Download and extract SubjectsPlus
     wget https://github.com/subjectsplus/SubjectsPlus/archive/v4.5.1.tar.gz
     
     tar -zxvf v4.5.1.tar.gz 
@@ -88,7 +88,8 @@ config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1", i
     chmod 775 -R /var/www/html/sp
     chown www-data:www-data -R /var/www/html/sp
     
-    # Créer la base de données, attention rien de sécuritaire ici.
+    # Create database
+    # This is not a secure database
     mysql -uroot -e "CREATE DATABASE subjectsplusdb"
     mysql -uroot -e "CREATE USER 'subjectsplus_user'@'localhost' IDENTIFIED BY 'subjectsplus_password'"
     mysql -uroot -e "GRANT ALL PRIVILEGES ON subjectsplusdb.* TO 'subjectsplus_user'@'localhost' WITH GRANT OPTION"
