@@ -44,5 +44,8 @@ Pour s'assurer d'avoir assez de mémoire vive, nous accordons 4 Go de RAM à la 
 * Rocket.chat
   * Documentation pour une installation avec Vagrant : [https://docs.rocket.chat/installation/automation-tools/vagrant](https://docs.rocket.chat/installation/automation-tools/vagrant)
 * [SubjectPlus](http://www.subjectsplus.com/)
+* [Tematres](https://www.vocabularyserver.com/)
+  * Documentation d'installation
+  * Démo officielle : [https://r020.com.ar/tematres/demo/index.php?setLang=en](https://r020.com.ar/tematres/demo/index.php?setLang=en)
 * Wikipedia
   * Documentation pour une installation avec Vagrant : [https://www.mediawiki.org/wiki/MediaWiki-Vagrant](https://www.mediawiki.org/wiki/MediaWiki-Vagrant)

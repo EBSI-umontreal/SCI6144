@@ -32,6 +32,7 @@ La liste des machines virtuelles par catégories pertinentes pour le cours SCI61
 ## Base de connaissance
 
 * Dokuwiki
+* Tematres
 * Wikipedia
 
 ## Gestion de bibliothèque - collections

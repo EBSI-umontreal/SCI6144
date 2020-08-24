@@ -1,6 +1,12 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# VM for tematres
+# Dokuwiki URL : http://127.0.0.1
+# Dokuwiki install URL : http://127.0.0.1/install.php
+# Dokuwiki admin username :
+# Dokuwiki admin passwaord :
+
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -65,8 +71,22 @@ end
   # Enable provisioning with a shell script. Additional provisioners such as
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   apt-get update
-  #   apt-get install -y apache2
-  # SHELL
+config.vm.provision "shell", inline: <<-SHELL
+
+  # Update and installe dependencies
+  apt-get update
+  apt-get install apache2 libapache2-mod-php mysql-server mysql-client php7.4-curl php7.4-gettext php7.4-json php7.4-mbstring php7.4-gd php7.4-mysql php7.4-simplexml -y
+
+  # Download latest version and unzip
+  wget https://github.com/tematres/TemaTres-Vocabulary-Server/archive/master.zip
+  mv /var/www/html/index.html
+  unzip master.zip -d /var/www/html
+
+  # Create database
+  # This is not secure
+  mysql -uroot -e "CREATE DATABASE tematres"
+  mysql -uroot -e "CREATE USER 'subjectsplus_user'@'root' IDENTIFIED BY 'pass'"
+  mysql -uroot -e "GRANT ALL PRIVILEGES ON tematres.* TO 'root'@'localhost' WITH GRANT OPTION"
+
+  SHELL
 end
