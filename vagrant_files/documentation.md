@@ -2,27 +2,21 @@
 
 Documentation pour le contenu des fichiers `Vagrantfile`.
 
-## Paramètres communs
+## Objectifs
 
-### Port forwading
+Pour faciliter la prise en main des logiciels nous uniformisons le maximum de paramètres de configuration.
 
-Pour ouvrir un ou des ports pour accéder à l'interface Web du logiciel.
+## Réseau
 
-Pour faciliter l'utilisation des VM, l'adresse IP de toutes les VM est `127.0.0.1`. Si un seul port est nécessaire, il serait opportun de rediriger vers le port 80.
+La redirection de port est configurée pour utiliser l'adresse IP `127.0.0.1`.
 
-`config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1", id: "apache2"`
+Si un seul port est nécessaire, il serait opportun de rediriger vers le port 80.
 
-### Mémoire vive
+Exemple : `config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1", id: "apache2"`
 
-Pour s'assurer d'avoir assez de RAM pour la VM.
+## Mémoire vive
 
-`vb.memory = "4096"`
-
-### Partage de fichiers
-
-Pour partager toujours le même dossier de travail.
-
-`config.vm.synced_folder "src/", "/srv/website"`
+Pour s'assurer d'avoir assez de mémoire vive, nous accordons 4 Go de RAM à la VM : `vb.memory = "4096"`
 
 ## Sources des VM
 
