@@ -36,9 +36,10 @@ Pour s'assurer d'avoir assez de mémoire vive, nous accordons 4 Go de RAM à la 
 * [Dokuwiki](https://www.dokuwiki.org/dokuwiki)
 * Elasticsearch
 * [Koha](https://koha-community.org/)
+  * Documentation d'installation : [https://wiki.koha-community.org/wiki/Debian](https://wiki.koha-community.org/wiki/Debian)
 * Nuxeo
-  * Fichiers à télécharger [https://nuxeo.github.io/downloads.html](https://nuxeo.github.io/downloads.html)
-  * Documentation d'intallation [https://doc.nuxeo.com/nxdoc/installing-the-nuxeo-platform-on-linux/](https://doc.nuxeo.com/nxdoc/installing-the-nuxeo-platform-on-linux/)
+  * Fichiers à télécharger : [https://nuxeo.github.io/downloads.html](https://nuxeo.github.io/downloads.html)
+  * Documentation d'intallation : [https://doc.nuxeo.com/nxdoc/installing-the-nuxeo-platform-on-linux/](https://doc.nuxeo.com/nxdoc/installing-the-nuxeo-platform-on-linux/)
 * [OpenKM](https://www.openkm.com/)
   * Documentation : [https://docs.openkm.com/kcenter/view/okm-6.3-com/installation.html](https://docs.openkm.com/kcenter/view/okm-6.3-com/installation.html)
 * Rocket.chat
