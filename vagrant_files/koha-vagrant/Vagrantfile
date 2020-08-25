@@ -4,6 +4,9 @@
 # Documentation to install Koha
 # URL : https://wiki.koha-community.org/wiki/Koha_on_ubuntu_-_packages
 # Don't forget to install build-essential.
+# URL http://127.0.0.1:8080
+# username : koha_library
+# password : PJQHTuHqax4iwIn@
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
@@ -90,7 +93,7 @@ Vagrant.configure("2") do |config|
   service apache2 restart
 
   # Add a Koha Community Repository, see : https://wiki.koha-community.org/wiki/Koha_on_ubuntu_-_packages
-  echo deb http://debian.koha-community.org/koha stable main | sudo tee /etc/apt/sources.list.d/koha.list
+  echo deb http://debian.koha-community.org/koha stable main | tee /etc/apt/sources.list.d/koha.list
   wget -O- https://debian.koha-community.org/koha/gpg.asc | apt-key add -
 
   # Install koha, see : https://wiki.koha-community.org/wiki/Koha_on_ubuntu_-_packages
@@ -104,14 +107,15 @@ Vagrant.configure("2") do |config|
   # Pre-Web Install Setup, see : https://wiki.koha-community.org/wiki/Koha_on_ubuntu_-_packages
   # Edit /etc/koha/koha-sites.conf
   sed -i '8 s/DOMAIN=".myDNSname.org"/DOMAIN=""/g' /etc/koha/koha-sites.conf
-  sed -i '8 s/INTRAPORT="80"/INTRAPORT="8080"/g' /etc/koha/koha-sites.conf
+  sed -i '9 s/INTRAPORT="80"/INTRAPORT="8080"/g' /etc/koha/koha-sites.conf
   sed -i '34 s/ZEBRA_LANGUAGE="en"/ZEBRA_LANGUAGE="fr"/g' /etc/koha/koha-sites.conf
-  
-  
 
   # Building Languages, see : https://wiki.koha-community.org/wiki/Koha_on_ubuntu_-_packages
   # We want our koha in French
   koha-translate --install fr-FR
+
+  # Show the password
+  # xmlstarlet sel -t -v 'yazgfs/config/pass' /etc/koha/sites/library/koha-conf.xml;echo
 
   SHELL
 end
