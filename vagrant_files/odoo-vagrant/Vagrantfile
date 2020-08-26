@@ -85,7 +85,8 @@ Vagrant.configure("2") do |config|
       # Set repository, see : https://www.odoo.com/documentation/13.0/setup/install.html#repository
       wget -O - https://nightly.odoo.com/odoo.key | apt-key add -
       echo "deb http://nightly.odoo.com/13.0/nightly/deb/ ./" >> /etc/apt/sources.list.d/odoo.list
-      apt-get update && apt-get install -y odoo
+      apt-get update
+      apt-get install -y odoo
   
     SHELL
   end
