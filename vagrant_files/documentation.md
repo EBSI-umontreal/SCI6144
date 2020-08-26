@@ -40,6 +40,8 @@ Pour s'assurer d'avoir assez de mémoire vive, nous accordons 4 Go de RAM à la 
 * Nuxeo
   * Fichiers à télécharger : [https://nuxeo.github.io/downloads.html](https://nuxeo.github.io/downloads.html) (en)
   * Documentation d'intallation : [https://doc.nuxeo.com/nxdoc/installing-the-nuxeo-platform-on-linux/](https://doc.nuxeo.com/nxdoc/installing-the-nuxeo-platform-on-linux/) (en)
+* [Odoo](https://www.odoo.com/fr_FR/)
+  * Documentation pout l'installation : [https://www.odoo.com/documentation/13.0/setup/install.html#prepare](https://www.odoo.com/documentation/13.0/setup/install.html#prepare) (en)
 * [OpenKM](https://www.openkm.com/) (en)
   * Documentation : [https://docs.openkm.com/kcenter/view/okm-6.3-com/installation.html](https://docs.openkm.com/kcenter/view/okm-6.3-com/installation.html) (en)
 * Rocket.chat

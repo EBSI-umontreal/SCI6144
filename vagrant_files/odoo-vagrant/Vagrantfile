@@ -2,9 +2,10 @@
 # vi: set ft=ruby :
 
 # Vagrantfile for Odoo
-# URL : http://127.0.0.1:8069
+# URL : http://127.0.0.1
 # Instructions for deploying, see : https://www.odoo.com/documentation/13.0/setup/deploy.html
-# URL for initial setup : http://127.0.0.1:8069/web/database/selector
+# URL for initial setup : http://127.0.0.1/web/database/selector
+# Forwarding port 8069 to 80 may cause the website app not to work.
 # Info for setup
 # Database URL or IP : localhost
 # Database name : 
