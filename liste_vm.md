@@ -7,6 +7,7 @@ La liste des machines virtuelles par catégories pertinentes pour le cours SCI61
 * Accesstomemory
 * Archivematica
 * ArchiveSpace
+* BitCurator
 * CollectiveAccess
 
 ## Gestion intégrée des documents
