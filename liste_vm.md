@@ -20,6 +20,12 @@ La liste des machines virtuelles par catégories pertinentes pour le cours SCI61
 * Alfresco
 * Nuxeo
 
+## Gestion des relations clients
+
+* Odoo
+* SuiteCRM
+* Vtiger
+
 ## Recherche en entreprise
 
 * Constellio
