@@ -35,6 +35,7 @@ Pour s'assurer d'avoir assez de mémoire vive, nous accordons 4 Go de RAM à la 
 * Constellio
 * [Dokuwiki](https://www.dokuwiki.org/dokuwiki) (en)
 * Elasticsearch
+  * Documentation pour une installation avec Vagrant : [https://github.com/elastic/elasticsearch/blob/master/Vagrantfile](https://github.com/elastic/elasticsearch/blob/master/Vagrantfile)
 * [Koha](https://koha-community.org/) (en)
   * Documentation d'installation : [https://wiki.koha-community.org/wiki/Debian](https://wiki.koha-community.org/wiki/Debian) (en)
 * Nuxeo
