@@ -44,6 +44,7 @@ La liste des machines virtuelles par catégories pertinentes pour le cours SCI61
 
 ## Gestion de bibliothèque - collections
 
+* Greenstone
 * Koha
 * SubjectsPlus
 
@@ -51,4 +52,3 @@ La liste des machines virtuelles par catégories pertinentes pour le cours SCI61
 
 * Alfresco
 * Dokuwiki
-* Sharepoint (pas de VM)
