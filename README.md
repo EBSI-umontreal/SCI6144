@@ -37,6 +37,8 @@ Les VM et les protocoles d'exploration sont disponibles dans le répertoire `SCI
 
 ## Autres ressources
 
+Le [wiki](https://github.com/EBSI-umontreal/SCI6144/wiki) contient de la documentation supplémentaire.
+
 La documentation publique complète de SCI6144 est disponible sur OSF à [https://osf.io/nex7r/](https://osf.io/nex7r/).
 
 ## License
