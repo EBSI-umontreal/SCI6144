@@ -45,9 +45,9 @@ La liste des machines virtuelles par catégories pertinentes pour le cours SCI61
 
 ## Gestion de bibliothèque - collections
 
-* CollectiveAccess
-* Greenstone
-* Koha
+* CollectiveAccess, version 4.5.1.
+* Greenstone, version 3.
+* Koha, version 20.05.
 * SubjectsPlus, version 4.5.1.
 
 ## Intranet et Extranet
