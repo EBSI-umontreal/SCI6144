@@ -7,8 +7,8 @@ La liste des machines virtuelles par catégories pertinentes pour le cours SCI61
 * Accesstomemory
 * Archivematica
 * ArchiveSpace
-* BitCurator
-* CollectiveAccess
+* BitCurator, version 2.2.8.
+* CollectiveAccess, version 4.5.1.
 
 ## Gestion intégrée des documents
 
@@ -23,7 +23,7 @@ La liste des machines virtuelles par catégories pertinentes pour le cours SCI61
 
 ## Gestion des relations clients
 
-* Odoo
+* Odoo, version 13.0.
 * SuiteCRM
 * Vtiger
 
@@ -38,15 +38,17 @@ La liste des machines virtuelles par catégories pertinentes pour le cours SCI61
 
 ## Base de connaissance
 
-* Dokuwiki
+* Dokuwiki, version 2020-07-29 "Hogfather".
+* OpenKM, version 6.3.2.
 * Tematres
 * Wikipedia
 
 ## Gestion de bibliothèque - collections
 
+* CollectiveAccess
 * Greenstone
 * Koha
-* SubjectsPlus
+* SubjectsPlus, version 4.5.1.
 
 ## Intranet et Extranet
 
