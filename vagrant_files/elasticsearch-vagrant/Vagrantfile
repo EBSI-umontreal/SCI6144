@@ -1,6 +1,8 @@
 # -*- mode: ruby -*-
 # vim: ft=ruby ts=2 sw=2 sts=2 et:
 
+# More info, here : https://www.youtube.com/watch?v=lQtKjlRI2qY&feature=youtu.be
+
 # This Vagrantfile exists to test packaging. Read more about its use in the
 # vagrant section in TESTING.asciidoc.
 
