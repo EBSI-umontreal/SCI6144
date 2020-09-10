@@ -1,11 +1,15 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# VM for tematres
-#tematres URL : http://127.0.0.1/vocab/
-# tematres install URL : http://127.0.0.1/vocab/install.php
-# tematres admin username :
-# tematres admin password :
+# Vagrantfile for Vufind
+# URL : http://127.0.0.1
+# URL for initial setup : http://127.0.0.1/web/database/selector
+# Forwarding port 8069 to 80 may cause the website app not to work.
+# Info for setup
+# Database URL or IP : localhost
+# Database name : 
+# Database user : 
+# Database password : 
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
@@ -29,13 +33,14 @@ Vagrant.configure("2") do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # NOTE: This will enable public access to the opened port
-  #config.vm.network "forwarded_port", guest: 80, host: 8080
+  # config.vm.network "forwarded_port", guest: 80, host: 8080
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
   # via 127.0.0.1 to disable public access
-  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1", id: "apache2"
-  config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1", id: "apache2"
+  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+  # See : https://www.odoo.com/fr_FR/forum/aide-1/question/url-for-odoo-application-157085
+config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1", id: "http"
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -56,13 +61,13 @@ Vagrant.configure("2") do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-config.vm.provider "virtualbox" do |vb|
+  config.vm.provider "virtualbox" do |vb|
   #   # Display the VirtualBox GUI when booting the machine
   #   vb.gui = true
   #
   #   # Customize the amount of memory on the VM:
-vb.memory = "4096"
-end
+    vb.memory = "4096"
+  end
   #
   # View the documentation for the provider you are using for more
   # information on available options.
@@ -70,27 +75,33 @@ end
   # Enable provisioning with a shell script. Additional provisioners such as
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
-config.vm.provision "shell", inline: <<-SHELL
+  config.vm.provision "shell", inline: <<-SHELL
 
-  # Update and installe dependencies
-  apt-get update
-  apt-get install -y apache2 libapache2-mod-php mysql-server mysql-client php7.4-curl php7.4-gettext php7.4-json php7.4-mbstring php7.4-gd php7.4-mysql php7.4-simplexml
+    # Installation documentation, see : https://vufind.org/wiki/installationhtml#packaged-installers
+    apt-get update
+    apt-get install -y php-sybase
 
-  # Download latest version and unzip
-  wget https://github.com/tematres/TemaTres-Vocabulary-Server/archive/master.zip
-  rm /var/www/html/index.html
-  unzip master.zip
-  mv TemaTres-Vocabulary-Server-master/* /var/www/html/
+    # Download deb package and install
+    wget https://github.com/vufind-org/vufind/releases/download/v7.0.1/vufind_7.0.1.deb
+    dpkg -i vufind_7.0.1.deb
 
-  # This is not secure
-  chmod 775 -R /var/www/html/
-  chown www-data:www-data -R /var/www/html/
+    # Install dependencies, see : https://vufind.org/wiki/installation:ubuntu
+    apt-get install -f -y
 
-  # Create database
-  # This is not secure
-  mysql -uroot -e "CREATE DATABASE tematres"
-  mysql -uroot -e "CREATE USER 'subjectsplus_user'@'root' IDENTIFIED BY 'pass'"
-  mysql -uroot -e "GRANT ALL PRIVILEGES ON tematres.* TO 'root'@'localhost' WITH GRANT OPTION"
+    # Apache2 setup, see : https://vufind.org/wiki/installation:ubuntu
+    sed -i '226 a # Include for vufind' /etc/apache2/apache2.conf
+    sed -i '227 a Include /usr/local/vufind/local/httpd-vufind.conf' /etc/apache2/apache2.conf
+    #ln -s /usr/local/vufind/local/httpd-vufind.conf /etc/apache2/conf-enabled/vufind.conf
+    systemctl restart apache2
 
-  SHELL
+    # Install solr
+    snap install solr
+
+    # Create database
+    mysql -uroot -e "CREATE DATABASE vufind"
+    mysql -uroot -e "CREATE USER 'vufind'@'localhost' IDENTIFIED BY 'sci6144'"
+    mysql -uroot -e "GRANT ALL PRIVILEGES ON vufind.* TO 'vufind'@'localhost' WITH GRANT OPTION"
+    service mysql restart
+
+    SHELL
 end

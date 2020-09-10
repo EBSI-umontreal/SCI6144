@@ -1,0 +1,115 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile for Vufind
+# URL : http://127.0.0.1
+# URL for initial setup : http://127.0.0.1/web/database/selector
+# Forwarding port 8069 to 80 may cause the website app not to work.
+# Info for setup
+# Database URL or IP : localhost
+# Database name : 
+# Database user : 
+# Database password : 
+# To access the Solr admin panel : http://127.0.0.1:8983/solr
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+    # The most common configuration options are documented and commented below.
+    # For a complete reference, please see the online documentation at
+    # https://docs.vagrantup.com.
+  
+    # Every Vagrant development environment requires a box. You can search for
+    # boxes at https://vagrantcloud.com/search.
+    config.vm.box = "generic/ubuntu2004"
+  
+    # Disable automatic box update checking. If you disable this, then
+    # boxes will only be checked for updates when the user runs
+    # `vagrant box outdated`. This is not recommended.
+    # config.vm.box_check_update = false
+  
+    # Create a forwarded port mapping which allows access to a specific port
+    # within the machine from a port on the host machine. In the example below,
+    # accessing "localhost:8080" will access port 80 on the guest machine.
+    # NOTE: This will enable public access to the opened port
+    # config.vm.network "forwarded_port", guest: 80, host: 8080
+  
+    # Create a forwarded port mapping which allows access to a specific port
+    # within the machine from a port on the host machine and only allow access
+    # via 127.0.0.1 to disable public access
+    # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+    # See : https://www.odoo.com/fr_FR/forum/aide-1/question/url-for-odoo-application-157085
+  config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1", id: "http"
+  config.vm.network "forwarded_port", guest: 8983, host: 8983, host_ip: "127.0.0.1", id: "solr"
+  
+    # Create a private network, which allows host-only access to the machine
+    # using a specific IP.
+    # config.vm.network "private_network", ip: "192.168.33.10"
+  
+    # Create a public network, which generally matched to bridged network.
+    # Bridged networks make the machine appear as another physical device on
+    # your network.
+    # config.vm.network "public_network"
+  
+    # Share an additional folder to the guest VM. The first argument is
+    # the path on the host to the actual folder. The second argument is
+    # the path on the guest to mount the folder. And the optional third
+    # argument is a set of non-required options.
+    # config.vm.synced_folder "../data", "/vagrant_data"
+  
+    # Provider-specific configuration so you can fine-tune various
+    # backing providers for Vagrant. These expose provider-specific options.
+    # Example for VirtualBox:
+    #
+    config.vm.provider "virtualbox" do |vb|
+    #   # Display the VirtualBox GUI when booting the machine
+    #   vb.gui = true
+    #
+    #   # Customize the amount of memory on the VM:
+      vb.memory = "4096"
+    end
+    #
+    # View the documentation for the provider you are using for more
+    # information on available options.
+  
+    # Enable provisioning with a shell script. Additional provisioners such as
+    # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
+    # documentation for more information about their specific syntax and use.
+    config.vm.provision "shell", inline: <<-SHELL
+  
+      # Installation documentation, see : https://vufind.org/wiki/installationhtml#packaged-installers
+      apt-get update
+      apt-get install -y php-sybase
+  
+      # Download deb package and install
+      wget https://github.com/vufind-org/vufind/releases/download/v7.0.1/vufind_7.0.1.deb
+      dpkg -i vufind_7.0.1.deb
+
+      # Install dependencies, see : https://vufind.org/wiki/installation:ubuntu
+      apt-get install -f -y
+
+      # Apache2 setup, see : https://vufind.org/wiki/installation:ubuntu
+      sed -i '226 a # Include for vufind' /etc/apache2/apache2.conf
+      sed -i '227 a Include /usr/local/vufind/local/httpd-vufind.conf' /etc/apache2/apache2.conf
+      #ln -s /usr/local/vufind/local/httpd-vufind.conf /etc/apache2/conf-enabled/vufind.conf
+      systemctl restart apache2
+
+      # Create database
+      # See : https://gist.github.com/csotomon/fe2bde0f9b76e53896294d64ac3b54d5
+      mysql -uroot -e "CREATE DATABASE vufind"
+      mysql -uroot -e "CREATE USER 'vufind'@'localhost' IDENTIFIED BY 'sci6144'"
+      mysql -uroot -e "GRANT ALL PRIVILEGES ON vufind.* TO 'vufind'@'localhost' WITH GRANT OPTION"
+      mysql -uroot -e "FLUSH PRIVILEGES"
+      service mysql restart
+
+      # Install and setup Solr, see : https://tecadmin.net/install-apache-solr-on-ubuntu-20-04/
+      cd /opt
+      wget https://archive.apache.org/dist/lucene/solr/8.6.2/solr-8.6.2.tgz
+      tar xzf solr-8.6.2.tgz solr-8.6.2/bin/install_solr_service.sh --strip-components=2
+      bash ./install_solr_service.sh solr-8.6.2.tgz
+      
+
+      SHELL
+  end

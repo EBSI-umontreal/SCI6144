@@ -12,24 +12,24 @@ La liste des machines virtuelles par catégories pertinentes pour le cours SCI61
 
 ## Gestion intégrée des documents
 
-* Alfresco (avec RM)
-* Constellio
+* Alfresco (avec RM) (en développement)
+* Constellio (en développement)
 * OpenKM
 
 ## Gestion de contenu d'entreprise
 
-* Alfresco
+* Alfresco (en développement)
 * Nuxeo
 
 ## Gestion des relations clients
 
 * Odoo, version 13.0.
-* SuiteCRM
-* Vtiger
+* SuiteCRM (en développement)
+* Vtiger (en développement)
 
 ## Recherche en entreprise
 
-* Constellio
+* Constellio (en développement)
 * Elasticsearch
 
 ## Systèmes de collaboration
@@ -49,8 +49,9 @@ La liste des machines virtuelles par catégories pertinentes pour le cours SCI61
 * Greenstone, version 3.
 * Koha, version 20.05.
 * SubjectsPlus, version 4.5.1.
+* Vufind, version 7.0.1. (en développement)
 
 ## Intranet et Extranet
 
-* Alfresco
+* Alfresco (en développement)
 * Dokuwiki
