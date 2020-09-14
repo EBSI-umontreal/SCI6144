@@ -2,7 +2,7 @@
 
 ## Instructions d'installation
 
-Source de la documentation : https://www.mediawiki.org/wiki/MediaWiki-Vagrant
+Source de la documentation : [https://www.mediawiki.org/wiki/MediaWiki-Vagrant](https://www.mediawiki.org/wiki/MediaWiki-Vagrant)
 
 - Cloner les fichiers : `git clone --recursive https://gerrit.wikimedia.org/r/mediawiki/vagrant`
 - `cd vagrant`
@@ -11,4 +11,4 @@ Source de la documentation : https://www.mediawiki.org/wiki/MediaWiki-Vagrant
 
 ## Accéder à la VM
 
-- URL : 127.0.0.1:8080
+- URL : [127.0.0.1:8080](127.0.0.1:8080)
