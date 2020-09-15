@@ -34,7 +34,7 @@ La liste des machines virtuelles par catégories pertinentes pour le cours SCI61
 
 ## Systèmes de collaboration
 
-* Rocket.chat
+* Rocket.chat, version 4.x
 
 ## Base de connaissance
 
