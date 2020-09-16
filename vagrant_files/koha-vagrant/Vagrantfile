@@ -6,7 +6,7 @@
 # Don't forget to install build-essential.
 # URL http://127.0.0.1:8080
 # username : koha_library
-# password : PJQHTuHqax4iwIn@
+# password : cOHp89uhgK3Gj87@
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
@@ -83,7 +83,16 @@ Vagrant.configure("2") do |config|
 
   # Install all dependencies before installing koha
   apt-get update
-  apt-get install -y apache2 build-essential libapache2-mod-php memcached mysql-server mysql-client perl php7.4-curl php7.4-gettext php7.4-json php7.4-mbstring php7.4-gd php7.4-mysql php7.4-simplexml
+  #apt-get install -y apache2 build-essential libapache2-mod-php memcached mysql-server mysql-client perl php7.4-curl php7.4-gettext php7.4-json php7.4-mbstring php7.4-gd php7.4-mysql php7.4-simplexml
+
+  # Add a Koha Community Repository, see : https://wiki.koha-community.org/wiki/Koha_on_ubuntu_-_packages
+  echo deb http://debian.koha-community.org/koha stable main | tee /etc/apt/sources.list.d/koha.list
+  wget -O- https://debian.koha-community.org/koha/gpg.asc | apt-key add -
+
+  # Install koha, see : https://wiki.koha-community.org/wiki/Koha_on_ubuntu_-_packages
+  apt-get update
+  apt-get upgrade -y
+  apt-get install -y koha-common
 
   # Apache ports, see : https://wiki.koha-community.org/wiki/Koha_on_ubuntu_-_packages
   # Listen 80
@@ -94,14 +103,6 @@ Vagrant.configure("2") do |config|
   a2enmod rewrite
   a2enmod cgi
   service apache2 restart
-
-  # Add a Koha Community Repository, see : https://wiki.koha-community.org/wiki/Koha_on_ubuntu_-_packages
-  echo deb http://debian.koha-community.org/koha stable main | tee /etc/apt/sources.list.d/koha.list
-  wget -O- https://debian.koha-community.org/koha/gpg.asc | apt-key add -
-
-  # Install koha, see : https://wiki.koha-community.org/wiki/Koha_on_ubuntu_-_packages
-  apt-get update
-  apt-get install -y koha-common
 
   # Create library, see : https://wiki.koha-community.org/wiki/Koha_on_ubuntu_-_packages
   koha-create --create-db library
