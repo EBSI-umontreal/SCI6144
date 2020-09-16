@@ -105,7 +105,6 @@ Vagrant.configure("2") do |config|
 
   # Create library, see : https://wiki.koha-community.org/wiki/Koha_on_ubuntu_-_packages
   koha-create --create-db library
-  mysql_secure_installation
 
   # Pre-Web Install Setup, see : https://wiki.koha-community.org/wiki/Koha_on_ubuntu_-_packages
   # Edit /etc/koha/koha-sites.conf
