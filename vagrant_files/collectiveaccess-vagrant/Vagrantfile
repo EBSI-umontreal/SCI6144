@@ -89,7 +89,7 @@ Vagrant.configure("2") do |config|
      sed -i '45s/my_database_password/providence_password/' /var/www/html/pawtucket2/setup.php
      sed -i '51s/name_of_my_database/providencedb/' /var/www/html/pawtucket2/setup.php
 
-     ln -s /var/www/html/pawtucket2/media /var/www/html/
+     ln -s /var/www/html/media /var/www/html/pawtucket2/
 
      chown www-data:www-data -R /var/www/html/
      chmod 775 -R /var/www/html/
