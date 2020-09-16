@@ -91,7 +91,7 @@ Vagrant.configure("2") do |config|
 
   # Install koha, see : https://wiki.koha-community.org/wiki/Koha_on_ubuntu_-_packages
   apt-get update
-  apt-get upgrade -y
+  #apt-get upgrade -y
   apt-get install -y koha-common
 
   # Apache ports, see : https://wiki.koha-community.org/wiki/Koha_on_ubuntu_-_packages
@@ -112,6 +112,7 @@ Vagrant.configure("2") do |config|
   sed -i '8 s/DOMAIN=".myDNSname.org"/DOMAIN=""/g' /etc/koha/koha-sites.conf
   sed -i '9 s/INTRAPORT="80"/INTRAPORT="8080"/g' /etc/koha/koha-sites.conf
   sed -i '34 s/ZEBRA_LANGUAGE="en"/ZEBRA_LANGUAGE="fr"/g' /etc/koha/koha-sites.conf
+  sed -i '41s/yes/no/' /etc/koha/koha-sites.conf
 
   # Building Languages, see : https://wiki.koha-community.org/wiki/Koha_on_ubuntu_-_packages
   # We want our koha in French
