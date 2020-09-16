@@ -7,6 +7,7 @@
 # URL http://127.0.0.1:8080
 # username : koha_library
 # password : dsfvjkCQdYT3jlv@ # This password is unique to a build.
+# URL to catalog : http://127.0.0.1
 # admin user = admin
 # admin password = SCI6144-a20
 
