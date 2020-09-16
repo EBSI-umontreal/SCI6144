@@ -1,42 +1,30 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# Vagrantfile for CollectiveAcess
+# Vagrantfile for CollectiveAcess, version 1.7.8
 # URL : 127.0.0.1/sp
-# URL for initial setup : 127.0.0.1/sp
+# URL for initial setup : 127.0.0.1
+# Administrator email : demo@localhost
 # Info for setup
 # Database URL or IP : localhost
-# Database name : 
-# Database user : 
-# Database password : 
+# Database name : providencedb
+# Database user : providence_user
+# Database password : providence_password
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  # The most common configuration options are documented and commented below.
-  # For a complete reference, please see the online documentation at
-  # https://docs.vagrantup.com.
 
-  # Every Vagrant development environment requires a box. You can search for
-  # boxes at https://vagrantcloud.com/search.
   config.vm.box = "bento/ubuntu-20.04"
 
+  # Disable synced folder.
   config.vm.synced_folder ".", "/vagrant", disabled: true
-  # Disable automatic box update checking. If you disable this, then
-  # boxes will only be checked for updates when the user runs
-  # `vagrant box outdated`. This is not recommended.
-  # config.vm.box_check_update = false
 
   config.vm.provider "virtualbox" do |v|
     v.name = "SCI6144-CollectiveAccess"
   end
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # NOTE: This will enable public access to the opened port
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
@@ -44,59 +32,66 @@ Vagrant.configure("2") do |config|
   # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
   config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1", id: "http"
 
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
-
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  # config.vm.network "public_network"
-
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
-
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
   config.vm.provider "virtualbox" do |vb|
-  #   # Display the VirtualBox GUI when booting the machine
-  #   vb.gui = true
-  #
+ 
   #   # Customize the amount of memory on the VM:
     vb.memory = "4096"
   end
-  #
-  # View the documentation for the provider you are using for more
-  # information on available options.
 
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
-  # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
 
     apt-get update
-    apt-get install apache2 libapache2-mod-php mysql-server mysql-client php7.4-curl php7.4-gettext php7.4-json php7.4-mbstring php7.4-gd php7.4-mysql php7.4-simplexml -y
+    apt-get install -y apache2 dcraw ffmpeg forensics-extra ghostscript imagemagick libapache2-mod-php mediainfo mysql-server mysql-client pdfminer-data php7.4-common php7.4-curl php7.4-gettext php7.4-json php7.4-mbstring php7.4-gd php7.4-mysql php7.4-simplexml php7.4-zip poppler-utils
 
-    # Download and extract SubjectsPlus
-    wget https://github.com/subjectsplus/SubjectsPlus/archive/v4.5.1.tar.gz
-    
-    tar -zxvf v4.5.1.tar.gz 
-    
-    mv SubjectsPlus-4.5.1 /var/www/html/sp
+    # Attention Wireshark (dumpcap) ne s'installe pas tout seul.
 
-    chmod 775 -R /var/www/html/sp
-    chown www-data:www-data -R /var/www/html/sp
+    apt-get install -y libreoffice --no-install-recommends  --no-install-suggests
+ 
+    # Paramètres de php.ini, voir : https://docs.collectiveaccess.org/wiki/Installing_Providence
+    sed -i '409s/128/256/' /etc/php/7.4/apache2/php.ini #memory_limit = 128M -> memory_limit = 256M
+    sed -i '846s/8/32/' /etc/php/7.4/apache2/php.ini #upload_max_filesize = 8M -> upload_max_filesize = 32M
+    sed -i '694s/2/32/' /etc/php/7.4/apache2/php.ini #post_max_size = 2M -> post_max_size = 32M
+
+    # Other dependencies
+    wget https://github.com/libgd/libgd/releases/download/gd-2.2.5/libgd-2.2.5.tar.gz
+    tar -zxvf libgd-2.2.5.tar.gz
+
+    # Download collectiveaccess/providence, see : https://docs.collectiveaccess.org/wiki/Installing_Providence
+     wget https://github.com/collectiveaccess/providence/archive/1.7.8.tar.gz
+     tar -zxvf 1.7.8.tar.gz
+     rm /var/www/html/index.html
+     mv providence-1.7.8/* /var/www/html/
+     mv /var/www/html/setup.php-dist /var/www/html/setup.php
+     rm 1.7.8.tar.gz
+
+     sed -i '38s/my_database_user/providence_user/' /var/www/html/setup.php
+     sed -i '44s/my_database_password/providence_password/' /var/www/html/setup.php
+     sed -i '50s/name_of_my_database/providencedb/' /var/www/html/setup.php
+
+     # Download collectiveaccess/pawtucket2
+     wget https://github.com/collectiveaccess/pawtucket2/archive/1.7.8.tar.gz
+     tar -zxvf 1.7.8.tar.gz
+     mkdir /var/www/html/pawtucket2/
+     mv pawtucket2-1.7.8/* /var/www/html/pawtucket2/
+     mv /var/www/html/pawtucket2/setup.php-dist /var/www/html/pawtucket2/setup.php
+     sed -i '39s/my_database_user/providence_user/' /var/www/html/pawtucket2/setup.php
+     sed -i '45s/my_database_password/providence_password/' /var/www/html/pawtucket2/setup.php
+     sed -i '51s/name_of_my_database/providencedb/' /var/www/html/pawtucket2/setup.php
+
+     ln -s /var/www/html/pawtucket2/media /var/www/html/
+
+     chown www-data:www-data -R /var/www/html/
+     chmod 775 -R /var/www/html/
     
     # Create database
     # This is not a secure database
-    mysql -uroot -e "CREATE DATABASE subjectsplusdb"
-    mysql -uroot -e "CREATE USER 'subjectsplus_user'@'localhost' IDENTIFIED BY 'subjectsplus_password'"
-    mysql -uroot -e "GRANT ALL PRIVILEGES ON subjectsplusdb.* TO 'subjectsplus_user'@'localhost' WITH GRANT OPTION"
+    mysql -uroot -e "CREATE DATABASE providencedb"
+    mysql -uroot -e "CREATE USER 'providence_user'@'localhost' IDENTIFIED BY 'providence_password'"
+    mysql -uroot -e "GRANT ALL PRIVILEGES ON providencedb.* TO 'providence_user'@'localhost' WITH GRANT OPTION"
 
   SHELL
 end
