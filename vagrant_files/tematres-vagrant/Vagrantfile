@@ -94,7 +94,7 @@ end
   chown www-data:www-data -R /var/www/html/
 
   # Adjust db.tematres.php, see : https://vocabularyserver.com/wiki/index.php?title=Install_TemaTres#Requirements
-  sed -e '39s/root/tematres/' /var/www/html/vocab/db.tematres.php # Ne semble pas fonctionner pour le moment,
+  sed -i '39s/root/tematres/' /var/www/html/vocab/db.tematres.php
 
   # Create database
   # This is not secure
