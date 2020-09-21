@@ -23,7 +23,7 @@ Vagrant.configure("2") do |config|
 
   # Nommage de la VM qui respecte notre modèle.
   config.vm.provider "virtualbox" do |v|
-    v.name = "ARV1055-atom"
+    v.name = "SCI6144-atom"
   end
 
   # Adresse de la VM qui respecte notre modèle.
