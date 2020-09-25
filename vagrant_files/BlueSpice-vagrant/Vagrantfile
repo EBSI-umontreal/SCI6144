@@ -31,11 +31,12 @@ Vagrant.configure("2") do |config|
     config.vm.provider "virtualbox" do |v|
       v.name = "SCI6144-BlueSpice"
     end
-    # Create a forwarded port mapping which allows access to a specific port
-    # within the machine from a port on the host machine. In the example below,
-    # accessing "localhost:8080" will access port 80 on the guest machine.
-    # NOTE: This will enable public access to the opened port
-    # config.vm.network "forwarded_port", guest: 80, host: 8080
+
+    # Pour copier le fichier zip
+    Vagrant.configure("2") do |config|
+    
+      config.vm.provision "file", source: "/sources/", destination: "$HOME/vagrant/sources"
+    end
   
     # Create a forwarded port mapping which allows access to a specific port
     # within the machine from a port on the host machine and only allow access
@@ -79,20 +80,7 @@ Vagrant.configure("2") do |config|
     config.vm.provision "shell", inline: <<-SHELL
        apt-get update
        apt-get install -y unzip
-       
-       # delete default apache2 index file.
-       rm /var/www/html/index.html
-       
-       # Download Dokuwiki and extract 
-       wget https://bluespice.com/filebase/bluespice-free-3-1-9/
-       unzip BlueSpice-free-3.1.9.zip
-       cd dokuwiki-master
-       mv * /var/www/html/
-  
-       # This is not a secure environment, see : https://www.dokuwiki.org/installer
-       chown -R www-data:www-data /var/www/html
-       chmod -R 775 /var/www/html
-  
+        
     SHELL
   end
   
