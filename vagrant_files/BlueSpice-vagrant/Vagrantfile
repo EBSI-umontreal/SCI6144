@@ -82,7 +82,7 @@ config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1", i
      rm /var/www/html/index.html
 
      unzip /tmp/sources/BlueSpice-free-3.1.9.zip
-     mv /bluespice/* /var/www/html/
+     mv bluespice/* /var/www/html/
      chmod 775 -R /var/www/html
      chown www-data:www-data -R /var/www/html
 
