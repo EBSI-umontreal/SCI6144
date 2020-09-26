@@ -2,7 +2,8 @@
 # vi: set ft=ruby :
 
 # VM for SuiteCRM, version 7.3.0.
-# Official documentation : 
+# Official user documentation : https://docs.suitecrm.com/user/
+# Official Core Modules documentation : https://docs.suitecrm.com/user/core-modules/
 # URL : http://127.0.0.1
 # Install URL : http://127.0.0.1
 # Admin user :
@@ -25,7 +26,7 @@ Vagrant.configure("2") do |config|
     config.vm.synced_folder ".", "/vagrant", disabled: true
 
     # Add sources folder
-    config.vm.provision "file", source: "C:/vm/vtiger/sources/", destination: "/tmp/"
+    config.vm.provision "file", source: "C:/vm/suiteCRM/sources/", destination: "/tmp/"
     
     config.vm.provider "virtualbox" do |v|
       v.name = "SCI6144-suiteCRM"
