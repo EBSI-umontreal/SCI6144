@@ -92,15 +92,16 @@ Vagrant.configure("2") do |config|
     rm /var/www/html/index.html
 
     tar -zxvf /tmp/sources/vtigercrm7.3.0.tar.gz -C /var/www/html/
+    mv /var/www/html/vtigercrm/* /var/www/html/
     
     # This is not secure
     chmod 775 -R /var/www/html/
     chown www-data:www-data -R /var/www/html/
   
     # Adjust php.ini, see : https://community.vtiger.com/help/vtigercrm/administrators/installation.html
-    sed -i '39s/root/tematres/' /var/www/html/vocab/db.tematres.php
-  
-
-  
+    sed -i '388s/30/60/' /etc/php/7.4/apache2/php.ini
+    sed -i '409s/128/256/' /etc/php/7.4/apache2/php.ini
+    sed -i '465s/"E_ALL & ~E_DEPRECATED & ~E_STRICT"/"E_ERROR & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED"/' /etc/php/7.4/apache2/php.ini
+     
     SHELL
   end
