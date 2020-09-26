@@ -25,7 +25,7 @@ La liste des machines virtuelles par catégories pertinentes pour le cours SCI61
 
 * Odoo, version 13.0.
 * SuiteCRM (en développement)
-* Vtiger (en développement)
+* Vtiger
 
 ## Recherche en entreprise
 
