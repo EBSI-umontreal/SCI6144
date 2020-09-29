@@ -102,6 +102,7 @@ end
   sed -i '388s/30/60/' /etc/php/7.4/apache2/php.ini
   sed -i '409s/128/256/' /etc/php/7.4/apache2/php.ini
   sed -i '465s/"E_ALL & ~E_DEPRECATED & ~E_STRICT"/"E_ERROR & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED"/' /etc/php/7.4/apache2/php.ini
+
   # Remove log error
   #log_errors
 
