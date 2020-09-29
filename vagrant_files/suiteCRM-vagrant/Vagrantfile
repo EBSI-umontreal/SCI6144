@@ -108,7 +108,7 @@ end
  
   # Create database
   # This is not secure
-  mysql -uroot -e "CREATE DATABASE suitecrm CHARACTER SET utf8 COLLATE utf8_general_ci"
+  mysql -uroot -e "CREATE DATABASE suitecrm DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci"
   mysql -uroot -e "CREATE USER 'suitecrm'@'localhost' IDENTIFIED BY 'suitecrm'"
   mysql -uroot -e "GRANT ALL PRIVILEGES ON suitecrm.* TO 'suitecrm'@'localhost' WITH GRANT OPTION"
   

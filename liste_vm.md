@@ -16,10 +16,14 @@ La liste des machines virtuelles par catégories pertinentes pour le cours SCI61
 * Constellio (en développement)
 * OpenKM
 
-## Gestion de contenu d'entreprise
+## Gestion de contenu d'entreprise (ECM)
 
 * Alfresco (en développement)
 * Nuxeo
+
+## Système de gestion de contenu (CMS)
+
+* Django-CMS (en développement)
 
 ## Gestion des relations clients
 
