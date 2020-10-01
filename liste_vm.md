@@ -28,7 +28,7 @@ La liste des machines virtuelles par catégories pertinentes pour le cours SCI61
 ## Gestion des relations clients
 
 * Odoo, version 13.0.
-* SuiteCRM, version 7.11.15
+* SuiteCRM, version 7.11.15 (en développement)
 * Vtiger, version 7.3.0.
 
 ## Recherche en entreprise
