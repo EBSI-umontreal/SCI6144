@@ -75,7 +75,22 @@ Vagrant.configure("2") do |config|
 
     # Update and install dependencies
     apt-get update
-    apt-get install git tomcat9 openjdk-11-jdk postgresql postgresql-client-common software-properties-common unzip -y
+    apt-get install git openjdk-11-jdk postgresql postgresql-client-common software-properties-common unzip -y
+
+    # Install Tomcat
+    mkdir /var/lib/tomcat9
+    wget http://apache.mirror.iweb.ca/tomcat/tomcat-9/v9.0.38/bin/apache-tomcat-9.0.38.tar.gz
+    tar -zxvf apache-tomcat-9.0.38.tar.gz -C /var/lib/tomcat9/
+    mv /var/lib/tomcat9/apache-tomcat-9.0.38/* /var/lib/tomcat9/
+    mkdir /var/lib/tomcat9/shared
+    mkdir /var/lib/tomcat9/shared/classes
+    mkdir /var/lib/tomcat9/shared/lib
+    groupadd tomcat
+    useradd -s /bin/false -g tomcat -d /var/lib/tomcat tomcat
+    chown -R tomcat:tomcat /var/lib/tomcat9/
+    # This is not secure
+    chmod -R 777 /var/lib/tomcat9/
+
 
     # Create PostgreSQL database, see : https://docs.alfresco.com/community/tasks/prep-filesys-db.html
     postgres psql -c "create database alfresco encoding 'utf8';"
@@ -93,8 +108,8 @@ Vagrant.configure("2") do |config|
 
     # Changes to Tomcat conf, see : https://docs.alfresco.com/community/tasks/configfiles-change-path.html
     sed -i 's+shared.loader=+shared.loader=${catalina.base}/shared/classes+g' /var/lib/tomcat9/conf/catalina.properties
-    sed -i '69 a \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ URIEncoding="UTF-8"' /var/lib/tomcat9/conf/server.xml
-    sed -i '71 a \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ maxHttpHeaderSize="32768"' /var/lib/tomcat9/conf/server.xml
+    #sed -i '69 a \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ URIEncoding="UTF-8"' /var/lib/tomcat9/conf/server.xml
+    #sed -i '71 a \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ maxHttpHeaderSize="32768"' /var/lib/tomcat9/conf/server.xml
     
     # Changes to Tomcat conf for Solr
     sed -i '73 a <Connector port="8443" protocol="org.apache.coyote.http11.Http11Protocol"' /var/lib/tomcat9/conf/server.xml

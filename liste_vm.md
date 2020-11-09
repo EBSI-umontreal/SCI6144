@@ -14,12 +14,13 @@ La liste des machines virtuelles par catégories pertinentes pour le cours SCI61
 
 * Alfresco (avec RM) (en développement)
 * Constellio (en développement)
+* Maarch RM (en démo uniquement à [https://demo.maarchrm.com/user/prompt](https://demo.maarchrm.com/user/prompt)
 * OpenKM
 
 ## Gestion de contenu d'entreprise (ECM)
 
 * Alfresco (en développement)
-* Nuxeo
+* Bitrix24
 
 ## Système de gestion de contenu (CMS)
 
