@@ -1,0 +1,124 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Documentation to install moodle
+# URL : https://wiki.koha-community.org/wiki/Koha_on_ubuntu_-_packages
+# Don't forget to install build-essential.
+# URL http://127.0.0.1/moodle
+# admin user = admin
+# admin password = 6#T7ZN*h6$w9jt
+# During install
+# Database user username : moodleuser
+# Database user password : yourpassword
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://vagrantcloud.com/search.
+  config.vm.box = "bento/ubuntu-20.04"
+
+  # Disable synced folder.
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  # Disable automatic box update checking. If you disable this, then
+  # boxes will only be checked for updates when the user runs
+  # `vagrant box outdated`. This is not recommended.
+  # config.vm.box_check_update = false
+  config.vm.provider "virtualbox" do |v|
+    v.name = "SCI6144-moodle"
+  end
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
+  # NOTE: This will enable public access to the opened port
+  # config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine and only allow access
+  # via 127.0.0.1 to disable public access
+  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1", id: "www"
+  
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+  # config.vm.network "private_network", ip: "192.168.33.10"
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  # config.vm.network "public_network"
+
+  # Share an additional folder to the guest VM. The first argument is
+  # the path on the host to the actual folder. The second argument is
+  # the path on the guest to mount the folder. And the optional third
+  # argument is a set of non-required options.
+  # config.vm.synced_folder "../data", "/vagrant_data"
+
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  # Example for VirtualBox:
+  #
+  config.vm.provider "virtualbox" do |vb|
+  #   # Display the VirtualBox GUI when booting the machine
+  #   vb.gui = true
+  #
+  #   # Customize the amount of memory on the VM:
+     vb.memory = "4096"
+   end
+  #
+  # View the documentation for the provider you are using for more
+  # information on available options.
+
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
+  # documentation for more information about their specific syntax and use.
+  config.vm.provision "shell", inline: <<-SHELL
+
+  # Install dependencies
+  # For Apache, see : https://docs.moodle.org/311/en/Apache
+   apt-get update
+   apt-get install -y apache2 libapache2-mod-php mysql-server mysql-client php7.4-curl php7.4-gettext php7.4-json php7.4-mbstring php7.4-gd php7.4-intl php7.4-mysql php7.4-simplexml php7.4-soap php7.4-xmlrpc php7.4-zip unzip
+
+   cd /var/www/html/
+   git clone -b MOODLE_311_STABLE git://git.moodle.org/moodle.git
+
+   chown -R root /var/www/html/moodle
+   chmod -R 0755 /var/www/html/moodle
+
+   # Adjuste Apache2, see : https://docs.moodle.org/311/en/Apache
+   sed -i '89 a AcceptPathInfo On' /etc/apache2/apache2.conf
+   #sed -i '90 a RewriteEngine On On' /etc/apache2/apache2.conf
+
+   # Create database, see : https://docs.moodle.org/311/en/MySQL
+   mysql -uroot -e "CREATE DATABASE moodle DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+   mysql -uroot -e "CREATE USER moodleuser@localhost IDENTIFIED BY 'yourpassword'";
+   mysql -uroot -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER ON moodle.* TO moodleuser@localhost";
+   mysql -uroot -e "FLUSH PRIVILEGES";
+
+   # Create the (moodledata) data directory
+   # This is not secure
+   mkdir /var/www/moodledata
+   chmod 0777 /var/www/moodledata
+
+   # Start Moodle install
+   chown www-data /var/www/html/moodle
+   cd /var/www/html/moodle/admin/cli
+   # Note using the cli install, but keep this just in case
+   # sudo -u www-data /usr/bin/php install.php
+   # chown -R root /var/www/html/moodle
+
+   # Change "max_input_vars 1000" to "max_input_vars 5000" in php.ini
+   sed -i.bak '405s/^;//' /etc/php/7.4/apache2/php.ini
+   sed -i.bak '405s/1000/5000/' /etc/php/7.4/apache2/php.ini
+   service apache2 restart
+
+  SHELL
+end
