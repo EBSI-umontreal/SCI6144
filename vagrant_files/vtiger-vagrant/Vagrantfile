@@ -1,12 +1,12 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# VM for tvtiger, version 7.3.0.
+# VM for tvtiger, version 7.4.0.
 # Official documentation : 
 # URL : http://127.0.0.1
 # Install URL : http://127.0.0.1
 # Admin user : admin
-# Admin password : SCI6144-A20
+# Admin password : SCI6144-a22*
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
@@ -25,7 +25,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
   # Add sources folder
-  config.vm.provision "file", source: "C:/vm/vtiger/sources/", destination: "/tmp/"
+  config.vm.provision "file", source: "./sources/", destination: "/tmp/"
   
   config.vm.provider "virtualbox" do |v|
     v.name = "SCI6144-vtiger"
@@ -88,10 +88,10 @@ end
   apt-get install -y apache2 libapache2-mod-php mysql-server mysql-client php7.4-curl php7.4-gd php7.4-imap php7.4-json php7.4-mbstring php7.4-gd php7.4-mysql php7.4-xml
 
   # Copy and extract
-  # Link for download : https://iweb.dl.sourceforge.net/project/vtigercrm/vtiger%20CRM%207.3.0/Core%20Product/vtigercrm7.3.0.tar.gz
+  # Link for download : https://iweb.dl.sourceforge.net/project/vtigercrm/vtiger%20CRM%207.3.0/Core%20Product/vtigercrm7.4.0.tar.gz
   rm /var/www/html/index.html
 
-  tar -zxvf /tmp/sources/vtigercrm7.3.0.tar.gz -C /var/www/html/
+  tar -zxvf /tmp/sources/vtigercrm7.4.0.tar.gz -C /var/www/html/
   mv /var/www/html/vtigercrm/* /var/www/html/
   
   # This is not secure
